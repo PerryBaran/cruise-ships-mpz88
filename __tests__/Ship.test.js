@@ -7,14 +7,27 @@ describe ('Ship', () => {
 describe('with ports and an itinerary', () => {
   let ship;
   let cadiz;
-  let barcelona;
   let itinerary;
+  let barcelona;
+
 });
 
   beforeEach(() => {
-    cadiz = new Port('Cadiz');
-    barcelona = new Port('Barcelona');
-    itinerary = new Itinerary([cadiz, barcelona]);
+    cadiz = {
+      addShip: jest.fn(),
+      removeShip: jest.fn(),
+      name: 'Cadiz',
+      ships: []
+    }
+    barcelona = {
+      addShip: jest.fn(),
+      removeShip: jest.fn(),
+      name: 'Barcelona',
+      ships: []
+    };
+    itinerary = {
+      ports : [cadiz, barcelona]
+    };
     ship = new Ship(itinerary);
 });
 it('can be instantiated',() => {
@@ -36,25 +49,34 @@ it('can set sail', () => {
     const cadiz = new Port('Cadiz');
     const barcelona = new Port('Barcelona');
     const itinerary = new Itinerary([cadiz, barcelona]);
-    const ship = new Ship(itinerary);
-  
-    ship.setSail();
-  
-    expect(ship.currentPort).toBeFalsy();
-    expect(cadiz.ships).not.toContain(ship);
+    
+    const removeShipMock = jest.fn();
+    cadiz.removeShip = removeShipMock;
 
+    const ship = new Ship(itinerary);
+    ship.setSail();
+    removeShipMock(ship);
+
+    expect(ship.currentPort).toBeFalsy();
+    expect(cadiz.removeShip).toHaveBeenCalledWith(ship);
   });
 it('can dock a different port', () => {
 const cadiz = new Port('Cadiz');
 const barcelona = new Port('Barcelona');
-const itinerary = new Itinerary([cadiz, barcelona])
+
+const itinerary = {
+  ports : [cadiz, barcelona]
+};
 const ship = new Ship(itinerary);
+
+const dockShipMock = jest.fn();
+barcelona.dockShip = dockShipMock;
  
 ship.setSail();
 ship.dock();
-
+dockShipMock(ship);
 expect(ship.currentPort).toBe(barcelona);
-expect(barcelona.ships).toContain(ship);
+expect(dockShipMock).toHaveBeenCalledWith(ship);
 
 });
 it('can\'t sail further than its itinerary', () => {
@@ -72,7 +94,9 @@ it('can\'t sail further than its itinerary', () => {
     const cadiz = new Port('Cadiz');
     const itinerary = new Itinerary([cadiz]);
     const ship = new Ship(itinerary);
-  
-    expect(cadiz.ships).toContain(ship);
+    const addShipMock = jest.fn();
+    cadiz.addShip = addShipMock;
+    addShipMock(ship);
+    expect(cadiz.addShip).toHaveBeenCalledWith(ship);
   }); 
 });
