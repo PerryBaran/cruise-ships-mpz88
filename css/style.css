@@ -29,6 +29,14 @@ body {
 #hud > div {
   margin-bottom: 8px;
 }
+#addPortForm {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  background-color: #f0f0f0;
+  padding: 10px;
+  border-radius: 5px;
+}
 #ports {
   margin-top: 96px;
   display: flex;

@@ -18,11 +18,17 @@
         <button id="sailbutton">Set Sail!</button>
         <div id="message" style="display: none;">Departing</div>
     </div>
+    <div id="addPortFormContainer">
+    <form id="addPortForm">
+        <input type="text" id="portNameInput" placeholder="Enter port name">
+        <button type="submit">Add Port</button>
+    </form>
+    </div>
     <div id="hud">
         <div id="currentPort">Current Port: Algeciras</div>
         <div id="nextPort">Next Port: Tarifa</div>
     </div>
-
+    
     <script src="src/Port.js"></script>
     <script src="src/Itinerary.js"></script>
     <script src="src/Ship.js"></script>
@@ -38,6 +44,8 @@
         const controller = new Controller(ship);
 
         controller.initialiseSea();
+        controller.initForm();
+
     </script>
 </body>
 </html>
